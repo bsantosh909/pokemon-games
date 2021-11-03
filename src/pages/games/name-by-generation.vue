@@ -75,7 +75,10 @@
                 </button>
             </div>
             <!-- Pokemon lists -->
-            <div class="flex flex-wrap justify-start w-full text-sm">
+            <div
+                v-if="isPlaying || hasPlayed"
+                class="flex flex-wrap justify-start w-full text-sm"
+            >
                 <div
                     v-for="(pokemon, i) of pokemonList"
                     :key="i"
