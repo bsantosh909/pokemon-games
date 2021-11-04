@@ -1,6 +1,6 @@
 <template>
     <h1 class="text-emerald-500 text-3xl text-center mb-10">Name Pokemon by Generations</h1>
-    <div v-if="fetching">
+    <div v-if="fetching !== false" class="text-center">
         Fetching data. Please wait!
     </div>
     <div v-else-if="error">
