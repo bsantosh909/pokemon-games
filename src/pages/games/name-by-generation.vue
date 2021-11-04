@@ -26,7 +26,7 @@
             <!-- Section to show game related info -->
             <div class="sticky top-10 bg-gray-100 py-1">
                 <div>
-                    <h3 class="text-center text-2xl underline"> Generation {{ activeGen }} </h3>
+                    <h3 class="text-center text-2xl font-semibold"> Generation {{ activeGen }} </h3>
                 </div>
                 <div class="flex justify-around">
                     <p class="my-auto">
