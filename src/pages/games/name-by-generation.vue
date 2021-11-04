@@ -77,18 +77,18 @@
             <!-- Pokemon lists -->
             <div
                 v-if="isPlaying || hasPlayed"
-                class="flex flex-wrap justify-start w-full text-sm"
+                class="flex flex-wrap justify-center text-sm"
             >
                 <div
                     v-for="(pokemon, i) of pokemonList"
                     :key="i"
-                    class="px-5 my-1 w-1/6 flex"
+                    class="px-3 my-1 flex"
                 >
                     <p class="w-6 text-right my-auto"> {{ i + 1 }}. </p>
                     <div class="ml-2">
                         <input
                             type="text"
-                            class="w-full px-1 py-1 rounded shadow placeholder-gray-600 capitalize"
+                            class="w-36 px-2 py-1 rounded shadow placeholder-gray-600 capitalize"
                             :class="isGuessed(pokemon.name) ? 'bg-green-200 font-semibold' : hasPlayed ? 'bg-red-200' : 'bg-white'"
                             disabled
                             :placeholder="getPlaceholderValue(pokemon.name)"
