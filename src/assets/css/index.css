@@ -1,0 +1,7 @@
+@import "./tailwind.css";
+@import "./pokemo-types.css";
+
+.text-with-shadow {
+  text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000,
+    -1px -1px 1px #000, 0 1px 1px #000;
+}
