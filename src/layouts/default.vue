@@ -2,10 +2,12 @@
     <div>
         <!-- Navbar -->
         <nav class="sticky top-0 bg-gray-200 shadow-sm py-2 px-2 lg:px-5 flex flex-wrap">
-            <p>Poké-Games</p>
-            <!-- <div class="ml-auto">
+            <NuxtLink to="/">
+                <p>Poké-Games</p>
+            </NuxtLink>
+            <div class="ml-auto">
                 <NuxtLink to="/games"> Games </NuxtLink>
-            </div> -->
+            </div>
         </nav>
         <!-- Pages -->
         <div class="container p-5">

@@ -3,7 +3,7 @@
         <div
             v-for="(game, i) of games"
             :key="i"
-            class="rounded-sm bg-gray-100 shadow-md px-3 py-1"
+            class="rounded-sm bg-gray-100 shadow-md px-3 py-1 my-2"
         >
             <NuxtLink :to="game.url">
                 <h2 class="text-xl font-semibold" > {{ game.title }} </h2>
@@ -21,6 +21,10 @@ export default defineComponent({
             {
                 title: "Name all pokemon by Generations",
                 url: "/games/name-by-generation"
+            },
+            {
+                title: "Name all pokemon by Types",
+                url: "/games/name-by-type"
             }
         ]
         return {
