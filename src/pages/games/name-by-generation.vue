@@ -25,6 +25,9 @@
         <div v-else class="bg-gray-100 p-3 mt-10">
             <!-- Section to show game related info -->
             <div class="sticky top-10 bg-gray-100 py-1">
+                <div>
+                    <h3 class="text-center text-2xl underline"> Generation {{ activeGen }} </h3>
+                </div>
                 <div class="flex justify-around">
                     <p class="my-auto">
                         <span class="text-lg border-b border-red-300 ">
