@@ -40,6 +40,12 @@ export default defineComponent({
                 difficulty: ["easy", "medium"]
             },
             {
+                title: "Name that pokemon",
+                id: "name-that-pokemon",
+                description: 'Guess that pokemon, but made it easier!',
+                difficulty: ["easy"]
+            },
+            {
                 title: "Name all pokemon by Generations",
                 id: "name-by-generation",
                 description: "Kanto to Galar, Try your best to name them all by the region they originated from!",
