@@ -25,6 +25,10 @@ export default defineComponent({
             {
                 title: "Name all pokemon by Types",
                 url: "/games/name-by-type"
+            },
+            {
+                title: "Guess that pokemon",
+                url: "/games/guess-that-pokemon"
             }
         ]
         return {
