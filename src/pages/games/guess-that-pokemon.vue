@@ -205,11 +205,3 @@ export default defineComponent({
     },
 })
 </script>
-
-<style scoped>
-.silhouette {
-  -webkit-filter: contrast(0) sepia(100%) hue-rotate(190deg) saturate(2000%) brightness(100%);
-  filter: contrast(0) sepia(100%) hue-rotate(190deg) saturate(2000%) brightness(100%);
-  opacity: 1;
-}
-</style>
