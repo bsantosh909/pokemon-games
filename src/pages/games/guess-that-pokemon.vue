@@ -95,6 +95,8 @@ import { defineComponent, ref } from 'vue'
 import { useQuery } from '@urql/vue'
 import { useIntervalFn, onKeyStroke } from '@vueuse/core'
 
+import { useNuxtApp } from '#app'
+
 interface Pokemon {
     id: number;
     name: string;
@@ -106,6 +108,8 @@ interface PokemonList {
 
 export default defineComponent({
     async setup() {
+        const nuxtApp = useNuxtApp();
+
         const result = await useQuery<PokemonList>({
             query: `
                 {
@@ -116,8 +120,6 @@ export default defineComponent({
                 }
             `
         })
-        
-        const NORMALIZE_NAME = (name: string) => (name ?? '').toLowerCase().replace(/-/g, ' ');
 
         const gameTime = ref(30);
         
@@ -145,7 +147,7 @@ export default defineComponent({
         }
 
         const guessPokemon = (name: string) => {
-            return NORMALIZE_NAME(activePokemon.value?.name!) === NORMALIZE_NAME(name);
+            return nuxtApp.$normalizeName(activePokemon.value?.name!) === nuxtApp.$normalizeName(name);
         }
 
         const game = useIntervalFn(() => {
@@ -170,7 +172,7 @@ export default defineComponent({
 
         const handleNameInput = () => {
             if (!isPlaying.value) return;
-            if (NORMALIZE_NAME(nameInput.value) === NORMALIZE_NAME(activePokemon.value?.name!)) {
+            if (nuxtApp.$normalizeName(nameInput.value) === nuxtApp.$normalizeName(activePokemon.value?.name!)) {
                 correctGuess.value += 1;
                 stopGame();
             }

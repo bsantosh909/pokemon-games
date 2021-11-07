@@ -108,6 +108,8 @@ import { defineComponent, ref, computed } from 'vue'
 import { useQuery } from '@urql/vue'
 import { useIntervalFn } from '@vueuse/core'
 
+import { useNuxtApp } from '#app'
+
 interface PokemonSpeciesList {
     pokemons: {
         id: number
@@ -118,6 +120,8 @@ interface PokemonSpeciesList {
 
 export default defineComponent({
     async setup() {
+        const nuxtApp = useNuxtApp();
+
         const result = await useQuery<PokemonSpeciesList>({
             query: `
                 {
@@ -130,8 +134,6 @@ export default defineComponent({
             `
         })
         
-        const NORMALIZE_NAME = (name: string) => (name ?? '').toLowerCase().replace(/-/g, ' ');
-
         const nameInput = ref('')
 
         const isPlaying = ref(false)
@@ -162,18 +164,18 @@ export default defineComponent({
         })
 
         const normalizedPokemonList = computed(() => {
-            return pokemonList.value?.map((poke) => NORMALIZE_NAME(poke.name));
+            return pokemonList.value?.map((poke) => nuxtApp.$normalizeName(poke.name));
         })
 
         const foundList = ref([''])
 
         const getPlaceholderValue = (name: string) => {
-            const normalName = NORMALIZE_NAME(name);
+            const normalName = nuxtApp.$normalizeName(name);
             return foundList.value.includes(normalName) || hasPlayed.value ? normalName : ''
         }
 
         const isGuessed = (name: string) => {
-            return foundList.value.includes(NORMALIZE_NAME(name));
+            return foundList.value.includes(nuxtApp.$normalizeName(name));
         }
 
         const game = useIntervalFn(() => {
@@ -203,7 +205,7 @@ export default defineComponent({
         }
 
         const handleNameInput = () => {
-            const normalizedName = NORMALIZE_NAME(nameInput.value);
+            const normalizedName = nuxtApp.$normalizeName(nameInput.value);
             // Successfully fetched
             if (normalizedPokemonList.value?.includes(normalizedName) && !foundList.value.includes(normalizedName)) {
                 foundList.value.push(normalizedName)
