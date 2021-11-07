@@ -56,6 +56,12 @@ export default defineComponent({
                 id: "name-by-type",
                 description: "Beautify fairy types or fierce dragon types, Try your best to name them all by the their types!",
                 difficulty: ["medium", "hard"]
+            },
+            {
+                title: "Guess that pokedex description",
+                id: "guess-that-pokedex-description",
+                description: "Guess the Pokemon based upon it's pokedex description from one of many games!",
+                difficulty: ["hard"]
             }
         ]
         return {
