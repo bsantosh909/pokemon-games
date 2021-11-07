@@ -12,10 +12,10 @@
                         <p
                             v-for="(diff, i) of game.difficulty"
                             :key="i"
-                            class="my-1 mr-2 px-2 py-1 rounded-full text-sm capitalize inline shadow"
+                            class="my-1 mr-2 px-2 py-1 rounded-full text-sm inline shadow"
                             :class="diff"
                         >
-                            {{ diff }}
+                            <span class="capitalize" > {{ diff }} </span>
                         </p>
                     </div>
                     <p>
