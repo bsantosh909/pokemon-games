@@ -55,12 +55,12 @@
                         @input="handleNameInput"
                     >
                 </div>
+                <p v-if="hasCompleted" class="mt-5 mb-2 text-center">
+                    🎉 You Successfully completed the challenge !!! 🎉
+                </p>
             </div>
             <!-- Start/Stop game -->
             <div class="my-5" align="center">
-                <p v-if="hasCompleted" class="my-5">
-                    🎉 You Successfully completed the challenge !!! 🎉
-                </p>
                 <button
                     v-if="isPlaying && foundList.length !== pokemonList?.length"
                     @click="stopGame()"
