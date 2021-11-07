@@ -11,8 +11,11 @@
             <button
                 v-for="i in latestGen"
                 :key="i"
-                class="rounded-full px-3 py-1 cursor-pointer m-2 shadow-md"
-                :class="activeGen === i ? 'bg-blue-300' : isPlaying ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-100'"
+                class="rounded-full px-3 py-1 cursor-pointer m-2 shadow-md border-2"
+                :class="[
+                    isPlaying && activeGen !== i ? 'blur-sm' : '',
+                    activeGen === i ? 'bg-blue-300 border-black' : 'bg-blue-100 border-white'
+                ]"
                 :disabled="isPlaying"
                 @click="changeGen(i)"
             >

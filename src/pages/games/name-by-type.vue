@@ -13,7 +13,7 @@
                 :key="type"
                 class="rounded-full px-3 py-1 cursor-pointer m-2 shadow-md border-2 flex"
                 :class="[
-                    isPlaying ? 'custors-not-allowed' : '',
+                    isPlaying && activeType !== type ? ' blur-sm' : '',
                     activeType === type ? 'border-black' : 'border-white',
                     type
                 ]"
