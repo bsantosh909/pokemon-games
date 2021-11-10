@@ -1,104 +1,106 @@
 <template>
-    <h1 class="text-emerald-500 text-3xl text-center mb-10">Name Pokemon by Generations</h1>
-    <div v-if="fetching !== false" class="text-center">
-        Fetching data. Please wait!
-    </div>
-    <div v-else-if="error">
-        {{ error }}
-    </div>
-    <div v-else>
-        <div class="flex flex-wrap justify-center select-none">
-            <button
-                v-for="i in latestGen"
-                :key="i"
-                class="rounded-full px-3 py-1 cursor-pointer m-2 shadow-md border-2"
-                :class="[
-                    isPlaying && activeGen !== i ? 'blur-sm' : '',
-                    activeGen === i ? 'bg-blue-300 border-black' : 'bg-blue-100 border-white'
-                ]"
-                :disabled="isPlaying"
-                @click="changeGen(i)"
-            >
-                <span> Generation {{ i }} </span>
-            </button>
+    <div>
+        <h1 class="text-emerald-500 text-3xl text-center mb-10">Name Pokemon by Generations</h1>
+        <div v-if="fetching !== false" class="text-center">
+            Fetching data. Please wait!
         </div>
-        <div v-if="activeGen === 0" class="mt-10">
-            <p class="text-2xl text-center italic">Select from above and start playing!</p>
+        <div v-else-if="error">
+            {{ error }}
         </div>
-        <div v-else class="bg-gray-100 p-3 mt-10">
-            <!-- Section to show game related info -->
-            <div class="sticky top-10 bg-gray-100 py-1">
-                <div>
-                    <h3 class="text-center text-2xl font-semibold"> Generation {{ activeGen }} </h3>
-                </div>
-                <div class="flex justify-around">
-                    <p class="my-auto">
-                        <span class="text-lg border-b border-red-300 ">
-                            <span class="font-semibold"> {{ pokemonList?.length }} </span>
-                            <span> Pokemons </span>
-                        </span>
-                        <span v-if="isPlaying || hasPlayed" class="text-sm"> ({{ foundList.length }} guessed) </span>
-                    </p>
-                    <p
-                        class="text-3xl font-semibold border-b border-emerald-300"
-                        :class="foundList.length === pokemonList?.length ? 'text-blue-600' : gameTime < 60 ? 'text-red-600' : gameTime < 180 ? 'text-orange-500' : ''"
-                    >
-                        {{ formattedTime }}
-                    </p>
-                </div>
-                <div class="flex justify-center my-6">
-                    <input
-                        type="text"
-                        name="pokemon-input"
-                        placeholder="Enter pokemon name"
-                        :disabled="!isPlaying"
-                        class="w-80 border border-gray-400 rounded-sm px-2 py-1 focus:outline-none placeholder-gray-500"
-                        :class="isPlaying ? 'bg-white' : 'bg-gray-100'"
-                        v-model="nameInput"
-                        @input="handleNameInput"
-                    >
-                </div>
-                <p v-if="hasCompleted" class="mt-5 mb-2 text-center">
-                    🎉 You Successfully completed the challenge !!! 🎉
-                </p>
-            </div>
-            <!-- Start/Stop game -->
-            <div class="my-5" align="center">
+        <div v-else>
+            <div class="flex flex-wrap justify-center select-none">
                 <button
-                    v-if="isPlaying && foundList.length !== pokemonList?.length"
-                    @click="stopGame()"
-                    class="bg-red-300 px-2 py-1"
-                >
-                    Forefit
-                </button>
-                <button
-                    v-else
-                    @click="startGame()"
-                    class="bg-green-300 px-2 py-1"
-                >
-                    <span v-if="!hasPlayed"> Start Playing </span>
-                    <span v-else> Play Again </span>
-                </button>
-            </div>
-            <!-- Pokemon lists -->
-            <div
-                v-if="isPlaying || hasPlayed"
-                class="flex flex-wrap justify-center text-sm"
-            >
-                <div
-                    v-for="(pokemon, i) of pokemonList"
+                    v-for="i in latestGen"
                     :key="i"
-                    class="px-3 my-1 flex"
+                    class="rounded-full px-3 py-1 cursor-pointer m-2 shadow-md border-2"
+                    :class="[
+                        isPlaying && activeGen !== i ? 'blur-sm' : '',
+                        activeGen === i ? 'bg-blue-300 border-black' : 'bg-blue-100 border-white'
+                    ]"
+                    :disabled="isPlaying"
+                    @click="changeGen(i)"
                 >
-                    <p class="w-6 text-right my-auto"> {{ i + 1 }}. </p>
-                    <div class="ml-2">
+                    <span> Generation {{ i }} </span>
+                </button>
+            </div>
+            <div v-if="activeGen === 0" class="mt-10">
+                <p class="text-2xl text-center italic">Select from above and start playing!</p>
+            </div>
+            <div v-else class="bg-gray-100 p-3 mt-10">
+                <!-- Section to show game related info -->
+                <div class="sticky top-10 bg-gray-100 py-1">
+                    <div>
+                        <h3 class="text-center text-2xl font-semibold"> Generation {{ activeGen }} </h3>
+                    </div>
+                    <div class="flex justify-around">
+                        <p class="my-auto">
+                            <span class="text-lg border-b border-red-300 ">
+                                <span class="font-semibold"> {{ pokemonList?.length }} </span>
+                                <span> Pokemons </span>
+                            </span>
+                            <span v-if="isPlaying || hasPlayed" class="text-sm"> ({{ foundList.length }} guessed) </span>
+                        </p>
+                        <p
+                            class="text-3xl font-semibold border-b border-emerald-300"
+                            :class="foundList.length === pokemonList?.length ? 'text-blue-600' : gameTime < 60 ? 'text-red-600' : gameTime < 180 ? 'text-orange-500' : ''"
+                        >
+                            {{ formattedTime }}
+                        </p>
+                    </div>
+                    <div class="flex justify-center my-6">
                         <input
                             type="text"
-                            class="w-36 px-2 py-1 rounded shadow placeholder-gray-600 capitalize"
-                            :class="isGuessed(pokemon.name) ? 'bg-green-200 font-semibold' : hasPlayed ? 'bg-red-200' : 'bg-white'"
-                            disabled
-                            :placeholder="getPlaceholderValue(pokemon.name)"
+                            name="pokemon-input"
+                            placeholder="Enter pokemon name"
+                            :disabled="!isPlaying"
+                            class="w-80 border border-gray-400 rounded-sm px-2 py-1 focus:outline-none placeholder-gray-500"
+                            :class="isPlaying ? 'bg-white' : 'bg-gray-100'"
+                            v-model="nameInput"
+                            @input="handleNameInput"
                         >
+                    </div>
+                    <p v-if="hasCompleted" class="mt-5 mb-2 text-center">
+                        🎉 You Successfully completed the challenge !!! 🎉
+                    </p>
+                </div>
+                <!-- Start/Stop game -->
+                <div class="my-5" align="center">
+                    <button
+                        v-if="isPlaying && foundList.length !== pokemonList?.length"
+                        @click="stopGame()"
+                        class="bg-red-300 px-2 py-1"
+                    >
+                        Forefit
+                    </button>
+                    <button
+                        v-else
+                        @click="startGame()"
+                        class="bg-green-300 px-2 py-1"
+                    >
+                        <span v-if="!hasPlayed"> Start Playing </span>
+                        <span v-else> Play Again </span>
+                    </button>
+                </div>
+                <!-- Pokemon lists -->
+                <div
+                    v-if="isPlaying || hasPlayed"
+                    class="flex flex-wrap justify-center text-sm"
+                >
+                    <div
+                        v-for="(pokemon, i) of pokemonList"
+                        :key="i"
+                        class="px-3 my-1 flex"
+                    >
+                        <p class="w-6 text-right my-auto"> {{ i + 1 }}. </p>
+                        <div class="ml-2">
+                            <input
+                                type="text"
+                                class="w-36 px-2 py-1 rounded shadow placeholder-gray-600 capitalize"
+                                :class="isGuessed(pokemon.name) ? 'bg-green-200 font-semibold' : hasPlayed ? 'bg-red-200' : 'bg-white'"
+                                disabled
+                                :placeholder="getPlaceholderValue(pokemon.name)"
+                            >
+                        </div>
                     </div>
                 </div>
             </div>

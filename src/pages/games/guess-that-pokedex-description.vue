@@ -1,83 +1,85 @@
 <template>
-    <h1 class="text-emerald-500 text-3xl text-center mb-10">Guess that Pokedex description</h1>
-    <div v-if="fetching !== false" class="text-center">
-        Fetching data. Please wait!
-    </div>
-    <div v-else-if="error">
-        {{ error }}
-    </div>
-    <div v-else class="bg-gray-200 pt-5 pb-2">
-        <div align="center">
-            <button
-                v-if="isPlaying"
-                class="px-2 py-1 rounded-sm shadow-sm bg-red-300"
-                @click="stopGame"
-            >
-                Forefit
-            </button>
-            <button
-                v-else
-                class="px-2 py-1 rounded-sm shadow-md bg-green-300"
-                :class="{ 'cursor-not-allowed': noMorePokemons }"
-                @click="startGame"
-                :disabled="noMorePokemons"
-            >
-                <span v-if="hasPlayed"> Next Pokemon </span>
-                <span v-else> Start Game </span>
-            </button>
+    <div>
+        <h1 class="text-emerald-500 text-3xl text-center mb-10">Guess that Pokedex description</h1>
+        <div v-if="fetching !== false" class="text-center">
+            Fetching data. Please wait!
         </div>
-        <div class="flex justify-around my-5">
-            <div>
-                <span class="text-xl"> Guesses </span>
-                <p>
-                    <span class="font-semibold"> {{ correctGuess || (seenPokemons.length ? 0 : '-') }} </span>
-                    <span> / {{ seenPokemons.length || '-' }} </span>
+        <div v-else-if="error">
+            {{ error }}
+        </div>
+        <div v-else class="bg-gray-200 pt-5 pb-2">
+            <div align="center">
+                <button
+                    v-if="isPlaying"
+                    class="px-2 py-1 rounded-sm shadow-sm bg-red-300"
+                    @click="stopGame"
+                >
+                    Forefit
+                </button>
+                <button
+                    v-else
+                    class="px-2 py-1 rounded-sm shadow-md bg-green-300"
+                    :class="{ 'cursor-not-allowed': noMorePokemons }"
+                    @click="startGame"
+                    :disabled="noMorePokemons"
+                >
+                    <span v-if="hasPlayed"> Next Pokemon </span>
+                    <span v-else> Start Game </span>
+                </button>
+            </div>
+            <div class="flex justify-around my-5">
+                <div>
+                    <span class="text-xl"> Guesses </span>
+                    <p>
+                        <span class="font-semibold"> {{ correctGuess || (seenPokemons.length ? 0 : '-') }} </span>
+                        <span> / {{ seenPokemons.length || '-' }} </span>
+                    </p>
+                </div>
+                <p
+                    class="text-3xl font-semibold border-b border-emerald-300"
+                    :class="[
+                        gameTime < 5 ? 'text-red-600' : gameTime < 10 ? 'text-orange-500' : '',
+                        gameTime < 5 && gameTime > 0 ? 'animate-pulse' : ''
+                    ]"
+                >
+                    {{ formattedTime }}
                 </p>
             </div>
-            <p
-                class="text-3xl font-semibold border-b border-emerald-300"
-                :class="[
-                    gameTime < 5 ? 'text-red-600' : gameTime < 10 ? 'text-orange-500' : '',
-                    gameTime < 5 && gameTime > 0 ? 'animate-pulse' : ''
-                ]"
+            <div class="flex justify-center my-5">
+                <input
+                    type="text"
+                    name="pokemon-input"
+                    placeholder="Enter pokemon name"
+                    :disabled="!isPlaying && !hasPlayed"
+                    class="w-80 border border-gray-400 rounded-sm px-2 py-1 focus:outline-none placeholder-gray-600"
+                    :class="isPlaying ? 'bg-white' : 'bg-gray-100'"
+                    v-model="nameInput"
+                    @input="handleNameInput"
+                >
+            </div>
+            <div
+                v-if="isPlaying || hasPlayed"
+                class="text-center text-xl my-16"
             >
-                {{ formattedTime }}
+                <span> "{{ activePokemonRandomDescription.description.replace(/\f/g, ' ').replace(/\n/g, ' ') }}" </span>
+            </div>
+            <p
+                v-if="hasPlayed && !isPlaying"
+                class="mt-5 text-lg text-center"
+            >
+                <span> The answer is </span>
+                <span class="font-semibold capitalize"> {{ activePokemon?.name }}! </span>
+                <span class="italic block capitalize text-sm"> The description is from Pokemon {{ activePokemonRandomDescription.game.name.replace('-', ' ') }}! </span>
+            </p>
+            <p
+                v-if="hasPlayed || isPlaying"
+                class="text-xs italic ml-2"
+            >
+                <span> * Press </span>
+                <span class="font-semibold"> ESC </span>
+                <span> to Stop current round or Start new round! </span>
             </p>
         </div>
-        <div class="flex justify-center my-5">
-            <input
-                type="text"
-                name="pokemon-input"
-                placeholder="Enter pokemon name"
-                :disabled="!isPlaying && !hasPlayed"
-                class="w-80 border border-gray-400 rounded-sm px-2 py-1 focus:outline-none placeholder-gray-600"
-                :class="isPlaying ? 'bg-white' : 'bg-gray-100'"
-                v-model="nameInput"
-                @input="handleNameInput"
-            >
-        </div>
-        <div
-            v-if="isPlaying || hasPlayed"
-            class="text-center text-xl my-16"
-        >
-            <span> "{{ activePokemonRandomDescription.description.replace(/\f/g, ' ').replace(/\n/g, ' ') }}" </span>
-        </div>
-        <p
-            v-if="hasPlayed && !isPlaying"
-            class="mt-5 text-lg text-center"
-        >
-            <span> The answer is </span>
-            <span class="font-semibold capitalize"> {{ activePokemon?.name }}! </span>
-            <span class="italic block capitalize text-sm"> The description is from Pokemon {{ activePokemonRandomDescription.game.name.replace('-', ' ') }}! </span>
-        </p>
-        <p
-            v-if="hasPlayed || isPlaying"
-            class="text-xs italic ml-2"
-        >
-            <span> * Press </span>
-            <span class="font-semibold"> ESC </span>
-            <span> to Stop current round or Start new round! </span>
-        </p>
     </div>
 </template>
 
