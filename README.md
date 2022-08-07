@@ -19,3 +19,5 @@ _<p align="center">Play some fun Pokémon games and test your knowledge about ho
 Whether you are a hardcore Pokémon fan or somone who knows some stuffs here and there, we have got you covered. ✌️
 
 If you love Pokémon, then there are tons of fun and engaging mini games to try from. 🎉
+
+Have fun playing!!!!!
